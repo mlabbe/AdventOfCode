@@ -27,18 +27,18 @@ fn read_calorie_count_into_sorted_vec(buf: &str) -> Vec<i32> {
 }
 
 fn part1(buf: &str) -> i32 {
-    let calorie_count = read_calorie_count_into_sorted_vec(&buf);
+    let calorie_count = read_calorie_count_into_sorted_vec(buf);
     *calorie_count.last().unwrap()
 }
 
 fn part2(buf: &str) -> i32 {
-    let calorie_count = read_calorie_count_into_sorted_vec(&buf);
+    let calorie_count = read_calorie_count_into_sorted_vec(buf);
     calorie_count[calorie_count.len() - 3..].iter().sum()
 }
 
 fn main() -> io::Result<()> {
-    println!("part 1: {}", part1(&INPUT));
-    println!("part 2: {}", part2(&INPUT));
+    println!("part 1: {}", part1(INPUT));
+    println!("part 2: {}", part2(INPUT));
 
     Ok(())
 }
@@ -67,11 +67,11 @@ mod tests {
 
     #[test]
     fn test_part_1() {
-        assert_eq!(part1(&EXAMPLE), 24000);
+        assert_eq!(part1(EXAMPLE), 24000);
     }
 
     #[test]
     fn test_part_2() {
-        assert_eq!(part2(&EXAMPLE), 45000);
+        assert_eq!(part2(EXAMPLE), 45000);
     }
 }
