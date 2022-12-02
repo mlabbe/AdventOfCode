@@ -115,9 +115,9 @@ fn part2(input: &str) -> i32 {
     for line in input.lines() {
         let line = line.trim();
 
-        let chars = line.split(' ').collect::<Vec<&str>>();
-        let opponent = PlayKind::from_char(chars[0].chars().next().unwrap());
-        let outcome = Outcome::from_char(chars[1].chars().next().unwrap());
+        let play_strings = line.split(' ').collect::<Vec<&str>>();
+        let opponent = PlayKind::from_char(play_strings[0].chars().next().unwrap());
+        let outcome = Outcome::from_char(play_strings[1].chars().next().unwrap());
 
         let response = outcome.pick_kind_to_match_outcome(opponent);
 
