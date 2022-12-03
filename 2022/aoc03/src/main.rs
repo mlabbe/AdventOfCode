@@ -32,6 +32,16 @@ fn find_first_similar_item_in_both_compartments(pc0: &PriorityCount, pc1: &Prior
     panic!("no similar item found in both compartments");
 }
 
+fn find_first_similar_item_in_all_compartments(pc0: &PriorityCount, pc1: &PriorityCount, pc2: &PriorityCount) -> u8 {
+    for i in 1..MAX_PRIORITY {
+        if pc0[i] > 0 && pc1[i] > 0 && pc2[i] > 0 {
+            return i as u8;
+        }        
+    }
+
+    panic!("no similar item found in all three compartments");
+}
+
 fn part1(input: &str) -> i32 {
     let mut sum = 0i32;
 
@@ -55,14 +65,40 @@ fn part1(input: &str) -> i32 {
     sum
 }
 
+fn part2(input: &str) -> i32 {
+    let mut sum = 0i32;
+
+    let all_lines = input.lines().collect::<Vec<&str>>();
+    assert!(all_lines.len() % 3 == 0);
+
+    let mut i = 0;
+    while i < all_lines.len() {
+        let priority_count_0 = priority_count_for_compartment(all_lines[i]);
+        let priority_count_1 = priority_count_for_compartment(all_lines[i+1]);
+        let priority_count_2 = priority_count_for_compartment(all_lines[i+2]);
+
+        let priority_ord = find_first_similar_item_in_all_compartments(
+            &priority_count_0,
+            &priority_count_1,
+            &priority_count_2);
+
+        sum += priority_ord as i32;
+
+        i += 3;
+    }
+
+    sum
+}
+
 fn main() {
     println!("part 1: {}", part1(&INPUT));
+    println!("part 2: {}", part2(&INPUT));
 }
 
 
 #[cfg(test)]
 mod tests {
-    use super::part1;
+    use super::*;
 
     
     static EXAMPLE: &str = r#"vJrwpWtwJgWrhcsFMMfFFhFp
@@ -78,10 +114,8 @@ CrZsJsPPZsGzwwsLwLmpwMDw
         assert_eq!(part1(EXAMPLE), 157);
     }
 
-    /*/
     #[test]
-    fn test_part_2() {
-        assert_eq!(part2(EXAMPLE), 12);
+    fn test_part_2() {        
+        assert_eq!(part2(EXAMPLE), 70);
     }
-    */
 }
