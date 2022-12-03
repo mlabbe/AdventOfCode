@@ -71,11 +71,10 @@ fn part2(input: &str) -> i32 {
     let all_lines = input.lines().collect::<Vec<&str>>();
     assert!(all_lines.len() % 3 == 0);
 
-    let mut i = 0;
-    while i < all_lines.len() {
-        let priority_count_0 = priority_count_for_compartment(all_lines[i]);
-        let priority_count_1 = priority_count_for_compartment(all_lines[i+1]);
-        let priority_count_2 = priority_count_for_compartment(all_lines[i+2]);
+    for line_set in all_lines.chunks(3) {    
+        let priority_count_0 = priority_count_for_compartment(line_set[0]);
+        let priority_count_1 = priority_count_for_compartment(line_set[1]);
+        let priority_count_2 = priority_count_for_compartment(line_set[2]);
 
         let priority_ord = find_first_similar_item_in_all_compartments(
             &priority_count_0,
@@ -83,8 +82,6 @@ fn part2(input: &str) -> i32 {
             &priority_count_2);
 
         sum += priority_ord as i32;
-
-        i += 3;
     }
 
     sum
