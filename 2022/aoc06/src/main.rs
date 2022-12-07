@@ -4,14 +4,18 @@ fn solve_for_length(input: &str, msg_length: usize) -> i32 {
     assert!(input.len() > msg_length);
 
     'outer: for i in msg_length..input.len() {
-        let mut table: [u8; 127] = [0; 127];
+        // yeah, I'm setting up the table so that the branch tests against 0 in order to ... 
+        // save an instruction byte over testing against a non-zero value
+        // I get my thrills in weird ways.
+        let mut table: [u8; 127] = [2; 127];
         let word = input[i - msg_length..i].as_bytes();
 
         for ord in word.iter() {
             let ord = *ord as usize;
 
-            table[ord] += 1;
-            if table[ord] > 1 {
+            table[ord] -= 1;
+            if table[ord] == 0 {
+                // duplicate found in set
                 continue 'outer;
             }
         }
@@ -23,6 +27,7 @@ fn solve_for_length(input: &str, msg_length: usize) -> i32 {
 fn part1(input: &str) -> i32 {
     solve_for_length(input, 4)
 }
+
 
 fn part2(input: &str) -> i32 {
     solve_for_length(input, 14)
