@@ -5,7 +5,7 @@ enum TerminalOutput {
     CommandCd(String),
     CommandLs,
 
-    ResponseDir(String),
+    ResponseDir(),
     ResponseSize(usize),
 }
 
@@ -13,10 +13,10 @@ fn parse_terminal_output(input: &str) -> Vec<TerminalOutput> {
     input
         .lines()
         .map(|line| {
-            if line.starts_with('$') {
+            if let Some(line) = line.strip_prefix('$') {
                 // parse command
 
-                let args: Vec<&str> = line[1..].split_whitespace().collect();
+                let args: Vec<&str> = line.split_whitespace().collect();
                 match args[0] {
                     "ls" => TerminalOutput::CommandLs,
                     "cd" => TerminalOutput::CommandCd(args[1].to_string()),
@@ -27,7 +27,7 @@ fn parse_terminal_output(input: &str) -> Vec<TerminalOutput> {
 
                 let args: Vec<&str> = line[0..].split_whitespace().collect();
                 match args[0] {
-                    "dir" => TerminalOutput::ResponseDir(args[1].to_string()),
+                    "dir" => TerminalOutput::ResponseDir(),
                     _ => TerminalOutput::ResponseSize(args[0].parse().expect("expected size")),
                 }
             }
